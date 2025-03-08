@@ -37,4 +37,8 @@ export class UserRepository {
 
     return user;
   }
+  
+  async delete(id: string) {
+    this.users = this.users.filter((user) => user.id !== id);
+  }
 }
