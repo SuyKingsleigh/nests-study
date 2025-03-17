@@ -7,7 +7,7 @@ export class UserRepository {
   private users: UserEntity[] = [];
 
   async existsByEmail(email: string) {
-    //@ts-ignore
+    //@ts-ignore`
     const found = this.users.find((user) => user.email === email);
     return found !== undefined;
   }
