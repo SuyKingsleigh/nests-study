@@ -4,6 +4,7 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { ListUserDto } from './dto/ListUser.dto';
 import { CreateUserDTO } from './dto/CreateUser.dto';
+import { UpdateUserDto } from './dto/UpdateUser.dto';
 
 @Injectable()
 export class UserService {
@@ -20,18 +21,31 @@ export class UserService {
   }
 
   async save(createUserDto: CreateUserDTO) {
-    let user = new UserEntity();
-    
-    user.name = createUserDto.name;
-    user.email = createUserDto.email;
-    user.password = createUserDto.password;
-    
-    return this.userRepository.insert(user);
+    let user = UserEntity.fromCreateUserDto(createUserDto);
+
+    return this.userRepository.save(user);
   }
 
   async findByEmail(email: string) {
     return await this.userRepository.findOne({
       where: { email },
     });
+  }
+  
+  async findById(id: string) {
+    return await this.userRepository.findOneBy({
+      id
+    });
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return this.userRepository.update(
+      id,
+      UserEntity.fromUpdateUserDto(updateUserDto),
+    );
+  }
+  
+  async delete(id: string) {
+    return this.userRepository.softDelete(id);
   }
 }

@@ -6,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CreateUserDTO } from './dto/CreateUser.dto';
+import { UpdateUserDto } from './dto/UpdateUser.dto';
 
 @Entity({
   name: 'users',
@@ -49,4 +51,23 @@ export class UserEntity {
     name: 'deleted_at',
   })
   deletedAt: string;
+
+  static fromCreateUserDto(createUserDto: CreateUserDTO): UserEntity {
+    let user = new UserEntity();
+    
+    user.name = createUserDto.name;
+    user.email = createUserDto.email;
+    user.password = createUserDto.password;
+    
+    return user;
+  }
+  
+  
+  static fromUpdateUserDto(updateUserDto: UpdateUserDto): UserEntity {
+    let user = new UserEntity();
+    user.name = updateUserDto.name;
+    user.email = updateUserDto.email;
+    user.password = updateUserDto.password;
+    return user;
+  }
 }
